@@ -12,7 +12,7 @@ class ChirpController extends Controller
      */
     public function index()
     {
-        $chirps = Chirp::with('user')->latest()->take(5)->get();
+        $chirps = Chirp::with('user')->latest()->take(10)->get();
         return view('home', [
             'chirps' => $chirps,
         ]);
@@ -33,6 +33,10 @@ class ChirpController extends Controller
     {
         $validated = $request->validate([
             'message' => 'required|string|max:255',
+        ], [
+            'message.required' => 'The message field is required.',
+            'message.string' => 'The message must be a string.',
+            'message.max' => 'The message may not be greater than 255 characters.',
         ]);
 
         Chirp::create([
@@ -53,17 +57,27 @@ class ChirpController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Chirp $chirp)
     {
-        //
+        return view('chirps.edit', compact('chirp'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Chirp $chirp)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ], [
+            'message.required' => 'The message field is required.',
+            'message.string' => 'The message must be a string.',
+            'message.max' => 'The message may not be greater than 255 characters.',
+        ]);
+
+        $chirp->update($validated);
+
+        return redirect('/')->with('success', 'Chirp updated successfully!');
     }
 
     /**
@@ -71,6 +85,8 @@ class ChirpController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $chirp = Chirp::find($id);
+        $chirp->delete();
+        return redirect('/')->with('success', 'Chirp deleted successfully!');
     }
 }

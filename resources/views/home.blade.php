@@ -18,11 +18,12 @@
                                 <textarea 
                                     name="message" 
                                     placeholder="What's on your mind?" 
-                                    class="textarea textarea-bordered w-full" 
-                                    rows="4" 
-                                    maxlength="255" 
-                                    required></textarea>
-                            
+                                    class="textarea textarea-bordered w-full resize-none @error('message') textarea-error @enderror" rows="4" maxlength="255" required >{{ old('message') }}</textarea>
+                                @error('message')
+                                    <div>
+                                        <span class="text-error text-sm">{{ $message }}</span>
+                                    </div>
+                                @enderror
                                 <label class="label">
                                     <span class="label-text-alt text-gray-500">Max 255 characters</span>
                                 </label>
