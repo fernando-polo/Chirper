@@ -29,7 +29,7 @@ class ChirpSeeder extends Seeder
                     'password' => bcrypt('password'),
                 ])
             ])
-            : User::take(3)->get();  
+            : User::take(3)->get(); 
 
         // Sample chirps
         $chirps = [
